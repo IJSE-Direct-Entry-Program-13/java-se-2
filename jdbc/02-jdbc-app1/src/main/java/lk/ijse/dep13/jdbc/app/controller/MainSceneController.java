@@ -7,6 +7,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.dep13.jdbc.app.db.DbConnection;
 import lk.ijse.dep13.jdbc.app.dto.Customer;
 
 import java.sql.*;
@@ -29,8 +30,7 @@ public class MainSceneController {
     }
 
     private void loadAllCustomers() throws SQLException {
-        Connection connection = DriverManager
-                .getConnection("jdbc:mysql://localhost:3306/dep13_jdbc", "root", "mysql");
+        Connection connection = DbConnection.getInstance().getConnection();
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery("SELECT * FROM customer");
         while (rst.next()) {
@@ -39,7 +39,6 @@ public class MainSceneController {
             String address = rst.getString("address");
             tblCustomers.getItems().add(new Customer(id, name, address));
         }
-        connection.close();
     }
 
     public void btnSaveOnAction(ActionEvent actionEvent) {
@@ -59,15 +58,13 @@ public class MainSceneController {
         }
 
         try {
-            Connection connection = DriverManager
-                    .getConnection("jdbc:mysql://localhost:3306/dep13_jdbc", "root", "mysql");
+            Connection connection = DbConnection.getInstance().getConnection();
             Statement stm = connection.createStatement();
             stm.executeUpdate("INSERT INTO customer(name, address) VALUES ('%s', '%s')"
                     .formatted(name, address), Statement.RETURN_GENERATED_KEYS);
             ResultSet generatedKeys = stm.getGeneratedKeys();
             generatedKeys.next();
             tblCustomers.getItems().add(new Customer(generatedKeys.getInt(1), name, address));
-            connection.close();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to save the customer, try again").show();
             e.printStackTrace();

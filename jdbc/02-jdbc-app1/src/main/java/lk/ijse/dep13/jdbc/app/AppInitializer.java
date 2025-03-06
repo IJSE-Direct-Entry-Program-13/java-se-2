@@ -4,13 +4,17 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lk.ijse.dep13.jdbc.app.db.DbConnection;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class AppInitializer extends Application {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         launch(args);
+        System.out.println("JVM is about to sleep");
+        DbConnection.getInstance().getConnection().close();
     }
 
     @Override

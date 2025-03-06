@@ -13,6 +13,7 @@
 
 <AnchorPane fx:id="root" prefHeight="517.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.dep13.jdbc.app.controller.MainSceneController">
    <children>
+       <Button fx:id="btnNewCustomer" layoutX="518.0" layoutY="20.0" mnemonicParsing="false" onAction="#btnNewCustomerOnAction" style="-fx-background-color: green; -fx-text-fill: white;" text="+ NEW CUSTOMER" AnchorPane.rightAnchor="10.0" />
       <TableView fx:id="tblCustomers" layoutX="23.0" layoutY="209.0" prefHeight="298.0" prefWidth="580.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="209.0">
         <columns>
           <TableColumn prefWidth="118.0" text="ID" />
@@ -44,7 +45,6 @@
       </VBox>
       <Button fx:id="btnSave" defaultButton="true" layoutX="98.0" layoutY="169.0" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="26.0" prefWidth="89.0" text="SAVE" />
       <Button fx:id="btnDelete" layoutX="193.0" layoutY="169.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="26.0" prefWidth="89.0" style="-fx-background-color: orange;" text="DELETE" />
-      <Button fx:id="btnNewCustomer" layoutX="518.0" layoutY="20.0" mnemonicParsing="false" onAction="#btnNewCustomerOnAction" style="-fx-background-color: green; -fx-text-fill: white;" text="+ NEW CUSTOMER" AnchorPane.rightAnchor="10.0" />
       <Label layoutX="16.0" layoutY="17.0" prefHeight="18.0" prefWidth="164.0" text="JDBC APP - 1">
          <font>
             <Font name="Ubuntu Regular" size="26.0" />

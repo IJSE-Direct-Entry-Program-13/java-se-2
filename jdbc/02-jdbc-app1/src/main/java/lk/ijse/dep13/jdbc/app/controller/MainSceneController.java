@@ -36,7 +36,7 @@ public class MainSceneController {
             int id = rst.getInt("id");
             String name = rst.getString("name");
             String address = rst.getString("address");
-            System.out.println(id + " " + name + " " + address);
+            tblCustomers.getItems().add(new Customer(id, name, address));
         }
         connection.close();
     }

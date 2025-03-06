@@ -1,6 +1,7 @@
 package lk.ijse.dep13.jdbc.app.controller;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -42,6 +43,35 @@ public class MainSceneController {
     }
 
     public void btnSaveOnAction(ActionEvent actionEvent) {
+        String name = txtName.getText().trim();
+        String address = txtAddress.getText().trim();
+
+        if (!name.matches("[A-Za-z ]+")) {
+            new Alert(Alert.AlertType.ERROR, "Invalid name").show();
+            txtName.requestFocus();
+            txtName.selectAll();
+            return;
+        } else if (address.length() < 3) {
+            new Alert(Alert.AlertType.ERROR, "Invalid address").show();
+            txtAddress.requestFocus();
+            txtAddress.selectAll();
+            return;
+        }
+
+        try {
+            Connection connection = DriverManager
+                    .getConnection("jdbc:mysql://localhost:3306/dep13_jdbc", "root", "mysql");
+            Statement stm = connection.createStatement();
+            stm.executeUpdate("INSERT INTO customer(name, address) VALUES ('%s', '%s')"
+                    .formatted(name, address), Statement.RETURN_GENERATED_KEYS);
+            ResultSet generatedKeys = stm.getGeneratedKeys();
+            generatedKeys.next();
+            tblCustomers.getItems().add(new Customer(generatedKeys.getInt(1), name, address));
+            connection.close();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to save the customer, try again").show();
+            e.printStackTrace();
+        }
     }
 
     public void btnDeleteOnAction(ActionEvent actionEvent) {

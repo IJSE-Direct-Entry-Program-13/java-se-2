@@ -20,7 +20,7 @@ public class FHttpController {
                     .prepareStatement("SELECT * FROM customer WHERE address = ?")){
 //            connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 //            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-//            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             connection.setAutoCommit(false);
             try {
                 stm.setString(1, address);

@@ -8,37 +8,40 @@ import java.sql.*;
 import java.time.Duration;
 
 @RestController
-@RequestMapping("/c")
-public class CHttpController {
+@RequestMapping("/f")
+public class FHttpController {
 
     @GetMapping
-    public String getData(String id) throws SQLException, InterruptedException {
+    public String getData(String address) throws SQLException, InterruptedException {
         try(Connection connection = DriverManager
                 .getConnection("jdbc:mysql://localhost:3306/dep13_tx",
                         "root", "mysql");
             PreparedStatement stm = connection
-                    .prepareStatement("SELECT * FROM customer WHERE id = ?")){
+                    .prepareStatement("SELECT * FROM customer WHERE address = ?")){
 //            connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 //            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
             connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             connection.setAutoCommit(false);
             try {
-                stm.setString(1, id);
+                stm.setString(1, address);
                 ResultSet rs = stm.executeQuery();
-                if (rs.next()) {
+                StringBuilder sb = new StringBuilder();
+                while (rs.next()) {
                     String name = rs.getString("name");
-                    String address = rs.getString("address");
-                    String result = "Name: " + name + ", Address: " + address;
-                    Thread.sleep(Duration.ofSeconds(20));
-                    stm.setString(1, id);
-                    rs = stm.executeQuery();
-                    rs.next();
-                    name = rs.getString("name");
-                    address = rs.getString("address");
-                    return (result + "<br>" + "Name: " + name + ", Address: " + address);
-                } else {
-                    return "No such customer";
+                    String id = rs.getString("id");
+                    sb.append("Id: ").append(id).append(", Name: ").append(name).append(", Address: ")
+                            .append(address).append("<br>");
                 }
+                Thread.sleep(Duration.ofSeconds(20));
+                sb.append("<hr>");
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String name = rs.getString("name");
+                    String id = rs.getString("id");
+                    sb.append("Id: ").append(id).append(", Name: ").append(name).append(", Address: ")
+                            .append(address).append("<br>");
+                }
+                return sb.toString();
             }finally {
                 connection.setAutoCommit(true);
             }

@@ -19,6 +19,10 @@ public class BHttpController {
                         "root", "mysql");
             PreparedStatement stm = connection
                     .prepareStatement("SELECT * FROM customer WHERE id = ?")){
+//            connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+//            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+//            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             stm.setString(1, id);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
